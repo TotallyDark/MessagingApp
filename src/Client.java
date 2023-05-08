@@ -1,26 +1,64 @@
+// A Java program for a Client
 import java.io.*;
 import java.net.*;
+
 public class Client {
-    public static void main(String args[])
+    // initialize socket and input output streams
+    private Socket socket = null;
+    private DataInputStream input = null;
+    private DataOutputStream out = null;
+
+    // constructor to put ip address and port
+    public Client(String address, int port)
     {
-        Client dac = new Client();
-        dac.go();
+        // establish a connection
+        try {
+            socket = new Socket(address, port);
+            System.out.println("Connected");
+
+            // takes input from terminal
+            input = new DataInputStream(System.in);
+
+            // sends output to the socket
+            out = new DataOutputStream(
+                    socket.getOutputStream());
+        }
+        catch (UnknownHostException u) {
+            System.out.println(u);
+            return;
+        }
+        catch (IOException i) {
+            System.out.println(i);
+            return;
+        }
+
+        // string to read message from input
+        String line = "";
+
+        // keep reading until "Over" is input
+        while (!line.equals("Over")) {
+            try {
+                line = input.readLine();
+                out.writeUTF(line);
+            }
+            catch (IOException i) {
+                System.out.println(i);
+            }
+        }
+
+        // close the connection
+        try {
+            input.close();
+            out.close();
+            socket.close();
+        }
+        catch (IOException i) {
+            System.out.println(i);
+        }
     }
 
-    public void go()
+    public static void main(String args[])
     {
-        try
-        {
-            Socket incoming = new Socket("127.0.0.1",4242);
-            InputStreamReader stream = new InputStreamReader(incoming.getInputStream());
-            BufferedReader reader = new BufferedReader(stream);
-            String advice = reader.readLine();
-            reader.close();
-            System.out.println("Today's advice is "+advice);
-        }
-        catch(Exception e)
-        {
-            System.out.println("Client Side Error");
-        }
+        Client client = new Client("10.187.0.6", 5000);
     }
 }

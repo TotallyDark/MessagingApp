@@ -23,5 +23,8 @@ public class FrontPage implements ActionListener {
         SocialCircle = new JButton("SocialCircle");
         SocialCircle.addActionListener(this);
         buttonPanel.add(SocialCircle);
+
+        frame.pack();
+        frame.setVisible(true);
     }
 }

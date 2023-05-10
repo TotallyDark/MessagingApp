@@ -10,7 +10,8 @@ public class FrontPage implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SocialCircle")){
-
+            SocialCircle x = new SocialCircle();
+            x.getSocialCircle();
         }
     }
     public FrontPage(){

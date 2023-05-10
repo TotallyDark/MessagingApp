@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class FrontPage implements ActionListener {
     JFrame frame;
     JPanel buttonPanel;
-    JButton SocialCircle;
+    JButton SocialCircle, MessagePage;
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SocialCircle")){
@@ -19,6 +19,10 @@ public class FrontPage implements ActionListener {
 
         buttonPanel = new JPanel();
         frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        MessagePage = new JButton("MessagePage");
+        MessagePage.addActionListener(this);
+        buttonPanel.add(MessagePage);
 
         SocialCircle = new JButton("SocialCircle");
         SocialCircle.addActionListener(this);

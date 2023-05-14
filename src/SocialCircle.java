@@ -14,7 +14,7 @@ public class SocialCircle implements ActionListener{
 
     public SocialCircle(){
         frame = new JFrame("Social Circle");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         frontPage = new JPanel();
         frame.add(frontPage, BorderLayout.NORTH);

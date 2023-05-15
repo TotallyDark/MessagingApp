@@ -13,19 +13,27 @@ public class FrontPage implements ActionListener {
     JFrame frame;
     JPanel buttonPanel, pagePanel;
     JButton SocialCircle, MessagePage, AddFriend, PersonalInfo;
-
+    private JPanel thePanel = null;
     private final Dimension PhotoDimension = new Dimension(50, 50);
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SocialCircle")){
-            SocialCircle x = new SocialCircle();
-            x.getSocialCircle();
         }
-        if(e.getActionCommand().equals("PersonalInfo")) {
+        else if(e.getActionCommand().equals("PersonalInfo")) {
+            frame.remove(thePanel);
             PersonalInfo y = new PersonalInfo();
             frame.add(y, BorderLayout.CENTER);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
+            thePanel = y;
+        }
+        else if(e.getActionCommand().equals("MessagePage")) {
+            frame.remove(thePanel);
+            Messaging y = new Messaging();
+            frame.add(y, BorderLayout.CENTER);
+            frame.getContentPane().validate();
+            frame.getContentPane().repaint();
+            thePanel = y;
         }
     }
     public FrontPage() throws IOException {
@@ -81,7 +89,7 @@ public class FrontPage implements ActionListener {
 
         pagePanel = new JPanel();
         frame.add(pagePanel, BorderLayout.NORTH);
-
+        thePanel = pagePanel;
 
         frame.setSize(600, 600);
         frame.setVisible(true);

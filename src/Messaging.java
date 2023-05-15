@@ -7,6 +7,7 @@ public class Messaging extends JPanel implements ActionListener {
     JButton send;
     JTextField text;
     public Messaging() {
+        this.
         send = new JButton("Send");
         text = new JTextField(10);
         this.add(text);

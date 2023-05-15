@@ -19,7 +19,9 @@ public class FrontPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SocialCircle")){
             SocialCircle x = new SocialCircle();
-            x.getSocialCircle();
+            frame.add(x,BorderLayout.NORTH);
+            frame.getContentPane().validate();
+            frame.getContentPane().repaint();
         }
         if(e.getActionCommand().equals("PersonalInfo")) {
             PersonalInfo y = new PersonalInfo();

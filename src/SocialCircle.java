@@ -3,31 +3,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class SocialCircle implements ActionListener{
-    JFrame frame;
-    JPanel frontPage;
-    JButton button;
+public class SocialCircle extends JPanel implements ActionListener{
+    JTextField textField = new JTextField(50);
     @Override
     public void actionPerformed(ActionEvent e) {
 
     }
-
     public SocialCircle(){
-        frame = new JFrame("Social Circle");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.add(textField);
+        this.add(new JButton("Image"));
+        textField.addActionListener(new ActionListener(){
 
-        frontPage = new JPanel();
-        frame.add(frontPage, BorderLayout.NORTH);
-
-        button = new JButton("u");
-        frontPage.add(button);
-
-        frame.pack();
-        frame.setVisible(true);
+            public void actionPerformed(ActionEvent e){
+                String text = textField.getText();
+                JLabel text1 = new JLabel(text);
+                add(text1);
+            }});
     }
-
-    public void getSocialCircle(){
-
-    }
-
 }

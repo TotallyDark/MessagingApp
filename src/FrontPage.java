@@ -18,6 +18,10 @@ public class FrontPage implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SocialCircle")){
+            SocialCircle x = new SocialCircle();
+            pagePanel.add(x, BorderLayout.NORTH);
+            frame.getContentPane().validate();
+            frame.getContentPane().repaint();
         }
         else if(e.getActionCommand().equals("PersonalInfo")) {
             pagePanel.remove(thePanel);

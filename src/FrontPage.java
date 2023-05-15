@@ -21,13 +21,18 @@ public class FrontPage implements ActionListener {
             SocialCircle x = new SocialCircle();
             x.getSocialCircle();
         }
+        if(e.getActionCommand().equals("PersonalInfo")) {
+            PersonalInfo y = new PersonalInfo();
+            frame.add(y, BorderLayout.CENTER);
+            frame.getContentPane().validate();
+            frame.getContentPane().repaint();
+        }
     }
     public FrontPage() throws IOException {
         frame = new JFrame("Mechat");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         buttonPanel = new JPanel();
-        frame.add(buttonPanel, BorderLayout.SOUTH);
 
         MessagePage = new JButton("MessagePage");
         MessagePage.addActionListener(this);
@@ -44,6 +49,9 @@ public class FrontPage implements ActionListener {
         PersonalInfo = new JButton("PersonalInfo");
         PersonalInfo.addActionListener(this);
         buttonPanel.add(PersonalInfo);
+
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
         ImageIcon IIcon = new ImageIcon("Photos/Profile_Picture_Default.png");
         JLabel image = new JLabel(IIcon);
 

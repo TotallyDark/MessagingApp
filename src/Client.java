@@ -60,7 +60,7 @@ public class Client {
 
     public static void main(String args[])
     {
-        Client client = new Client("10.19.103.241", 50000);
+        Client client = new Client("10.16.107.255", 4000);
     }
 }
 

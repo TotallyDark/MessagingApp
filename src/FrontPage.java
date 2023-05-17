@@ -18,10 +18,12 @@ public class FrontPage implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SocialCircle")){
+            pagePanel.remove(thePanel);
             SocialCircle x = new SocialCircle();
             pagePanel.add(x, BorderLayout.NORTH);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
+            thePanel = x;
         }
         else if(e.getActionCommand().equals("PersonalInfo")) {
             pagePanel.remove(thePanel);
@@ -33,11 +35,11 @@ public class FrontPage implements ActionListener {
         }
         else if(e.getActionCommand().equals("MessagePage")) {
             pagePanel.remove(thePanel);
-            Messaging y = new Messaging();
-            pagePanel.add(y, BorderLayout.SOUTH);
+            Messaging z = new Messaging();
+            pagePanel.add(z, BorderLayout.SOUTH);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
-            thePanel = y;
+            thePanel = z;
         }
     }
     public FrontPage() throws IOException {

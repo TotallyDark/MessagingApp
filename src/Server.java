@@ -1,5 +1,4 @@
 // A Java program for a Server
-/*
 import java.net.*;
 import java.io.*;
 
@@ -61,7 +60,7 @@ public class Server
         Server server = new Server(50000);
     }
 }
-*/
+/*
 // Java program to illustrate Server side
 // Implementation using DatagramSocket
 import java.io.IOException;
@@ -119,3 +118,4 @@ public class Server
     }
 }
 
+*/

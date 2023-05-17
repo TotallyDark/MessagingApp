@@ -1,5 +1,5 @@
 // A Java program for a Client
-/*
+
 import java.io.*;
 import java.net.*;
 
@@ -60,14 +60,15 @@ public class Client {
 
     public static void main(String args[])
     {
-        Client client = new Client("10.16.108.67", 50000);
+        Client client = new Client("10.19.103.241", 50000);
     }
 }
 
 
 // Java program to illustrate Client side
 // Implementation using DatagramSocket
-*/
+
+/*
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -109,3 +110,4 @@ public class Client {
         }
     }
 }
+*/

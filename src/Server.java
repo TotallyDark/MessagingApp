@@ -65,9 +65,9 @@ public class Server extends JFrame {
     }
     private void sendMessage(String message, String userName) {
         try{
-            output.writeObject(userName+ " - " +message);
+            output.writeObject(userName+ " - " +message+"\n");
             output.flush();
-            showMessage(userName + " - " +message);
+            showMessage(userName + " - " +message+"\n");
         }
         catch (IOException ioException) {
             chatWindow.append("\nMessage was not sent");

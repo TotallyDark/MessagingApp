@@ -41,7 +41,7 @@ public class Server extends JFrame {
                     setupStreams();
                     whileChatting();
                 } catch (EOFException eofException) {
-                    showMessage("\nServer closed the chat! ");
+                    showMessage("\nClient closed the chat! ");
                 } finally {
                     close();
                 }
@@ -80,7 +80,7 @@ public class Server extends JFrame {
         do {
             try {
                 message = (String) input.readObject();
-                showMessage("\n" +message);
+                showMessage(message);
             }catch (ClassNotFoundException classNotFoundException){
                 showMessage("\nMessage not readable");
             }

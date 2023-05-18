@@ -42,7 +42,7 @@ public class Client extends JFrame{
             setupStreams();
             whileChatting();
         }catch (EOFException eofException) {
-            showMessage("Client ended connection");
+            showMessage("\nClient ended connection");
         }catch (IOException ioException) {
             ioException.printStackTrace();
         }finally {
@@ -50,15 +50,15 @@ public class Client extends JFrame{
         }
     }
     private void connectToServer() throws IOException{
-        showMessage("Connecting...");
+        showMessage("\nConnecting...");
         connection = new Socket(InetAddress.getByName(serverIP), port);
-        showMessage("Connected");
+        showMessage("\nConnected");
     }
     private void setupStreams() throws IOException{
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
         input = new ObjectInputStream(connection.getInputStream());
-        showMessage("Streams are connected");
+        showMessage("\nStreams are connected");
     }
     private void whileChatting() throws IOException{
         ableToType(true);
@@ -67,12 +67,12 @@ public class Client extends JFrame{
                 message = (String) input.readObject();
                 showMessage(message);
             }catch (ClassNotFoundException classNotFoundException) {
-                showMessage("Unable to read message");
+                showMessage("\nUnable to read message");
             }
         } while(!message.equals("SERVER - END"));
     }
     private void close(){
-        showMessage("Shutting down connection");
+        showMessage("\nShutting down connection");
         ableToType(false);
         try{
             output.close();
@@ -88,7 +88,7 @@ public class Client extends JFrame{
             output.flush();
             showMessage(userName + " - " +message);
         }catch(IOException ioException){
-            chatWindow.append("Message cannot send");
+            chatWindow.append("\nMessage cannot send");
         }
     }
     private void showMessage(final String msg) {

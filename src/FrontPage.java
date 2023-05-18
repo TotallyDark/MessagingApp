@@ -36,7 +36,7 @@ public class FrontPage implements ActionListener {
         }
         else if(e.getActionCommand().equals("MessagePage")) {
             pagePanel.remove(thePanel);
-            Server z = new Server();
+            Server z = new Server(6789);
             pagePanel.add(z, BorderLayout.SOUTH);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();

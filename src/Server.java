@@ -10,9 +10,11 @@ public class Server extends JFrame {
     private ObjectInputStream input;
     private ServerSocket server;
     private Socket connection;
+    private int port;
 
-    public Server() {
+    public Server(int port) {
         super("Message");
+        this.port =port;
         userText = new JTextField();
         userText.setEditable(false);
         userText.addActionListener(
@@ -32,14 +34,14 @@ public class Server extends JFrame {
     }
     public void startRun() {
         try {
-            server = new ServerSocket(6789, 100);
+            server = new ServerSocket(port, 100);
             while (true) {
                 try {
                     waitForConnection();
                     setupStreams();
                     whileChatting();
                 } catch (EOFException eofException) {
-                    showMessage("Server closed the chat! ");
+                    showMessage("\nServer closed the chat! ");
                 } finally {
                     close();
                 }
@@ -50,16 +52,16 @@ public class Server extends JFrame {
         }
     }
     private void waitForConnection() throws IOException {
-        showMessage("Waiting for connection");
+        showMessage("\nWaiting for connection");
         connection = server.accept();
-        showMessage("Connected to " + connection.getInetAddress().getHostName());
+        showMessage("\nConnected to " + connection.getInetAddress().getHostName());
     }
 
     private void setupStreams() throws IOException{
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
         input = new ObjectInputStream(connection.getInputStream());
-        showMessage("You are now chatting");
+        showMessage("\nYou are now chatting");
     }
     private void sendMessage(String message, String userName) {
         try{
@@ -68,11 +70,11 @@ public class Server extends JFrame {
             showMessage(userName + " - " +message);
         }
         catch (IOException ioException) {
-            chatWindow.append("Message was not sent");
+            chatWindow.append("\nMessage was not sent");
         }
     }
     private void whileChatting() throws IOException {
-        String message = "You can now begin chatting";
+        String message = "\nYou can now begin chatting";
         sendMessage(message, "Server");
         ableToType(true);
         do {
@@ -80,7 +82,7 @@ public class Server extends JFrame {
                 message = (String) input.readObject();
                 showMessage("\n" +message);
             }catch (ClassNotFoundException classNotFoundException){
-                showMessage("Message not readable");
+                showMessage("\nMessage not readable");
             }
         } while (!message.equals("CLIENT - END"));
     }

@@ -35,11 +35,11 @@ public class FrontPage implements ActionListener {
         }
         else if(e.getActionCommand().equals("MessagePage")) {
             pagePanel.remove(thePanel);
-            Messaging z = new Messaging();
+            Server z = new Server();
             pagePanel.add(z, BorderLayout.SOUTH);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
-            thePanel = z;
+            z.startRun();
         }
     }
     public FrontPage() throws IOException {

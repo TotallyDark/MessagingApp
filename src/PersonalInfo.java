@@ -10,7 +10,8 @@ public class PersonalInfo extends JPanel implements ActionListener{
     JLabel label1, label2, label3;
     JTextField text;
     JPanel Top, first, second, NameSection;
-
+    private String name;
+    private FrontPage fp;
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -21,7 +22,7 @@ public class PersonalInfo extends JPanel implements ActionListener{
             second = new JPanel();
 
             label1 = new JLabel("Current Name:");
-            label2 = new JLabel("User");
+            label2 = new JLabel(name);
             first.add(label1);
             first.add(label2);
 
@@ -46,6 +47,7 @@ public class PersonalInfo extends JPanel implements ActionListener{
                                     @Override
                                     public void run() {
                                         label2.setText(text.getText());
+                                        fp.setName(text.getText());
                                         text.setText("");
                                     }
                                 }
@@ -58,7 +60,9 @@ public class PersonalInfo extends JPanel implements ActionListener{
             this.repaint();
         }
     }
-    public PersonalInfo() {
+    public PersonalInfo(String name, FrontPage fp) {
+        this.fp = fp;
+        this.name = name;
         setLayout(new BorderLayout());
         Top = new JPanel();
 
@@ -74,9 +78,6 @@ public class PersonalInfo extends JPanel implements ActionListener{
         this.validate();
         this.repaint();
         this.add(Top, BorderLayout.NORTH);
-    }
-    public String getName() {
-        return label2.getText();
     }
 
 }

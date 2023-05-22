@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class SocialCircle extends JPanel implements ActionListener{
-    JTextField textField = new JTextField(20);
+    JTextField textField = new JTextField(30);
     JPanel buttonPanel = new JPanel();
     private JList<String> textMessage;
     private DefaultListModel<String> listModel;
@@ -17,9 +17,11 @@ public class SocialCircle extends JPanel implements ActionListener{
     }
     public SocialCircle(JFrame frame) {
         setLayout(new BorderLayout());
-        add(buttonPanel, BorderLayout.NORTH);
+        JButton text = new JButton("Text Message");
+        add(text, BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.CENTER);
+
         buttonPanel.add(textField);
-        buttonPanel.add(new JButton("Image"));
 
         listModel = new DefaultListModel<>();
         textMessage = new JList<>(listModel);
@@ -31,7 +33,7 @@ public class SocialCircle extends JPanel implements ActionListener{
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
                     String text =textField.getText();
                     textField.setText("");
-                    listModel.addElement(text);
+                    listModel.addElement(getName() + ":" + text);
                     repaint();
                 }
             }

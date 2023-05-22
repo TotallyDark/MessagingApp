@@ -6,10 +6,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 
 public class PersonalInfo extends JPanel implements ActionListener{
-    JButton NameSet, ProfileSet, Change;
-    JLabel label1, label2, label3;
+    JButton NameSet, ProfileSet;
+    JLabel label1, label2, label3, label4, Profile1, newProfile;
     JTextField text;
-    JPanel Top, first, second, NameSection;
+    JPanel Top, first, second, NameSection, ProfileSection, third, fourth;
     private String name;
     private FrontPage fp;
 
@@ -33,11 +33,23 @@ public class PersonalInfo extends JPanel implements ActionListener{
 
             NameSection.add(first);
             NameSection.add(second);
+            this.add(NameSection, BorderLayout.CENTER);
             this.validate();
             this.repaint();
-            this.add(NameSection, BorderLayout.CENTER);
         }
-        if(text.getText() != "") {
+        if(e.getActionCommand().equals("Set Profile")) {
+            ProfileSection = new JPanel();
+            ProfileSection.setLayout(new GridLayout(2, 1));
+            third = new JPanel();
+            fourth = new JPanel();
+
+            label4 = new JLabel("Current Profile");
+
+            third.add(label4);
+
+            newProfile = new JLabel("New Profile: ");
+        }
+        if(!text.getText().equals("")) {
             text.addKeyListener(new KeyAdapter() {
                 @Override
                 public void keyPressed(KeyEvent e) {

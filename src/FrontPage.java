@@ -20,7 +20,7 @@ public class FrontPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("SocialCircle")){
             pagePanel.remove(thePanel);
-            SocialCircle x = new SocialCircle(frame);
+            SocialCircle x = new SocialCircle();
             pagePanel.add(x);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();

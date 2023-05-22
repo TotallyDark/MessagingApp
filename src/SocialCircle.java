@@ -15,7 +15,7 @@ public class SocialCircle extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
     }
-    public SocialCircle(JFrame frame) {
+    public SocialCircle() {
         setLayout(new BorderLayout());
         JButton text = new JButton("Text Message");
         add(text, BorderLayout.NORTH);

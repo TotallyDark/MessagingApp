@@ -42,6 +42,14 @@ public class FrontPage implements ActionListener {
             frame.getContentPane().repaint();
             z.startRun();
         }
+        else if(e.getActionCommand().equals("AddFriend")) {
+            pagePanel.remove(thePanel);
+            AddFriend a = new AddFriend();
+            pagePanel.add(a, BorderLayout.CENTER);
+            frame.getContentPane().validate();
+            frame.getContentPane().repaint();
+            thePanel = a;
+        }
     }
     public FrontPage() throws IOException {
         frame = new JFrame("Mechat");
@@ -58,7 +66,7 @@ public class FrontPage implements ActionListener {
         buttonPanel.add(SocialCircle);
 
         AddFriend = new JButton("AddFriend");
-        SocialCircle.addActionListener(this);
+        AddFriend.addActionListener(this);
         buttonPanel.add(AddFriend);
 
         PersonalInfo = new JButton("PersonalInfo");

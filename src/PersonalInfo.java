@@ -1,17 +1,34 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.awt.Image;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
 
 public class PersonalInfo extends JPanel implements ActionListener{
     JButton NameSet, ProfileSet;
-    JLabel label1, label2, label3, label4, Profile1, newProfile;
-    JTextField text;
+    JLabel label1, label2, label3, Profile1, newProfile;
+    JTextField text, text1;
     JPanel Top, first, second, NameSection, ProfileSection, third, fourth;
-    private String name;
+    private String name, URL;
     private FrontPage fp;
+    private final Dimension PhotoDimension = new Dimension(50, 50);
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -36,45 +53,84 @@ public class PersonalInfo extends JPanel implements ActionListener{
             this.add(NameSection, BorderLayout.CENTER);
             this.validate();
             this.repaint();
+            if(text.getText() != null) {
+                text.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                            SwingUtilities.invokeLater(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            label2.setText(text.getText());
+                                            fp.setName(text.getText());
+                                            text.setText("");
+                                        }
+                                    }
+                            );
+
+                        }
+                    }
+                });
+                this.validate();
+                this.repaint();
+            }
         }
         if(e.getActionCommand().equals("Set Profile")) {
             ProfileSection = new JPanel();
             ProfileSection.setLayout(new GridLayout(2, 1));
             third = new JPanel();
-            fourth = new JPanel();
+            newProfile = new JLabel("New Profile Picture URL: ");
+            text1 = new JTextField(100);
+            third.add(newProfile);
+            third.add(text1);
+            ProfileSection.add(third);
 
-            label4 = new JLabel("Current Profile");
-
-            third.add(label4);
-
-            newProfile = new JLabel("New Profile: ");
-        }
-        if(!text.getText().equals("")) {
-            text.addKeyListener(new KeyAdapter() {
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    if(e.getKeyCode() == KeyEvent.VK_ENTER){
-                        SwingUtilities.invokeLater(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        label2.setText(text.getText());
-                                        fp.setName(text.getText());
-                                        text.setText("");
+            if(text1.getText() != null) {
+                text1.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                            SwingUtilities.invokeLater(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            fp.setProfile(text1.getText());
+                                            text1.setText("");
+                                            URL url = null;
+                                            try {
+                                                url = new URL(URL);
+                                            } catch (MalformedURLException ex) {
+                                                throw new RuntimeException(ex);
+                                            }
+                                            Image image;
+                                            try {
+                                                image = ImageIO.read(url);
+                                            } catch (IOException ex) {
+                                                throw new RuntimeException(ex);
+                                            }
+                                            Image i = image.getScaledInstance((int)PhotoDimension.getWidth(), (int)PhotoDimension.getHeight(), Image.SCALE_DEFAULT);
+                                            Profile1 = new JLabel(new ImageIcon(i));
+                                            ProfileSection.add(Profile1);
+                                        }
                                     }
-                                }
-                        );
+                            );
 
+                        }
                     }
-                }
-            });
+                });
+            }
+
+            this.add(ProfileSection, BorderLayout.CENTER);
             this.validate();
             this.repaint();
+
         }
     }
-    public PersonalInfo(String name, FrontPage fp) {
+    public PersonalInfo(String name, FrontPage fp, String URL) {
         this.fp = fp;
         this.name = name;
+        this.URL = URL;
         setLayout(new BorderLayout());
         Top = new JPanel();
 

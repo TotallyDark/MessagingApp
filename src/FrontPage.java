@@ -13,7 +13,7 @@ public class FrontPage implements ActionListener {
     JFrame frame;
     JPanel buttonPanel, pagePanel;
     JButton SocialCircle, MessagePage, AddFriend, PersonalInfo;
-    private String user = "User";
+    private String user = "User", URL;
     private JPanel thePanel = new JPanel();
     private final Dimension PhotoDimension = new Dimension(50, 50);
     @Override
@@ -28,7 +28,7 @@ public class FrontPage implements ActionListener {
         }
         else if(e.getActionCommand().equals("PersonalInfo")) {
             pagePanel.remove(thePanel);
-            PersonalInfo y = new PersonalInfo(user, this);
+            PersonalInfo y = new PersonalInfo(user, this, URL);
             pagePanel.add(y, BorderLayout.CENTER);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
@@ -104,4 +104,5 @@ public class FrontPage implements ActionListener {
     public void setName(String name) {
        this.user = name;
     }
+    public void setProfile(String URL) {this.URL = URL;}
 }

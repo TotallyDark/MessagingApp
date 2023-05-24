@@ -24,9 +24,9 @@ import javax.swing.JLabel;
 public class PersonalInfo extends JPanel implements ActionListener{
     JButton NameSet, ProfileSet;
     JLabel label1, label2, label3, Profile1, newProfile;
-    JTextField text;
+    JTextField text, text1;
     JPanel Top, first, second, NameSection, ProfileSection, third, fourth;
-    private String name;
+    private String name, URL;
     private FrontPage fp;
     private final Dimension PhotoDimension = new Dimension(50, 50);
 
@@ -78,32 +78,59 @@ public class PersonalInfo extends JPanel implements ActionListener{
         }
         if(e.getActionCommand().equals("Set Profile")) {
             ProfileSection = new JPanel();
-            ProfileSection.setLayout(new GridLayout(1, 1));
+            ProfileSection.setLayout(new GridLayout(2, 1));
             third = new JPanel();
-            URL url = null;
-            try {
-                url = new URL("https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*");
-            } catch (MalformedURLException ex) {
-                throw new RuntimeException(ex);
+            newProfile = new JLabel("New Profile Picture URL: ");
+            text1 = new JTextField(100);
+            third.add(newProfile);
+            third.add(text1);
+            ProfileSection.add(third);
+
+            if(text1.getText() != null) {
+                text1.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if(e.getKeyCode() == KeyEvent.VK_ENTER){
+                            SwingUtilities.invokeLater(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            fp.setProfile(text1.getText());
+                                            text1.setText("");
+                                            URL url = null;
+                                            try {
+                                                url = new URL(URL);
+                                            } catch (MalformedURLException ex) {
+                                                throw new RuntimeException(ex);
+                                            }
+                                            Image image;
+                                            try {
+                                                image = ImageIO.read(url);
+                                            } catch (IOException ex) {
+                                                throw new RuntimeException(ex);
+                                            }
+                                            Image i = image.getScaledInstance((int)PhotoDimension.getWidth(), (int)PhotoDimension.getHeight(), Image.SCALE_DEFAULT);
+                                            Profile1 = new JLabel(new ImageIcon(i));
+                                            ProfileSection.add(Profile1);
+                                        }
+                                    }
+                            );
+
+                        }
+                    }
+                });
             }
-            Image image;
-            try {
-                image = ImageIO.read(url);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            Image i = image.getScaledInstance((int)PhotoDimension.getWidth(), (int)PhotoDimension.getHeight(), Image.SCALE_DEFAULT);
-            Profile1 = new JLabel(new ImageIcon(i));
-            ProfileSection.add(Profile1);
+
             this.add(ProfileSection, BorderLayout.CENTER);
             this.validate();
             this.repaint();
 
         }
     }
-    public PersonalInfo(String name, FrontPage fp) {
+    public PersonalInfo(String name, FrontPage fp, String URL) {
         this.fp = fp;
         this.name = name;
+        this.URL = URL;
         setLayout(new BorderLayout());
         Top = new JPanel();
 

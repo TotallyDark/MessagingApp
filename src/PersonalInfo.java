@@ -25,7 +25,8 @@ public class PersonalInfo extends JPanel implements ActionListener{
     JButton NameSet, ProfileSet;
     JLabel label1, label2, label3, Profile1, newProfile;
     JTextField text, text1;
-    JPanel Top, first, second, NameSection, ProfileSection, third, fourth;
+    JPanel Top, first, second, NameSection, ProfileSection, third;
+    private JPanel general = new JPanel();
     private String name, URL;
     private FrontPage fp;
     private final Dimension PhotoDimension = new Dimension(50, 50);
@@ -33,6 +34,7 @@ public class PersonalInfo extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Set Name")) {
+            this.remove(general);
             NameSection = new JPanel();
             NameSection.setLayout(new GridLayout(2, 1));
             first = new JPanel();
@@ -50,7 +52,8 @@ public class PersonalInfo extends JPanel implements ActionListener{
 
             NameSection.add(first);
             NameSection.add(second);
-            this.add(NameSection, BorderLayout.CENTER);
+            general = NameSection;
+            this.add(general, BorderLayout.CENTER);
             this.validate();
             this.repaint();
             if(text.getText() != null) {
@@ -77,11 +80,12 @@ public class PersonalInfo extends JPanel implements ActionListener{
             }
         }
         if(e.getActionCommand().equals("Set Profile")) {
+            this.remove(general);
             ProfileSection = new JPanel();
             ProfileSection.setLayout(new GridLayout(2, 1));
             third = new JPanel();
             newProfile = new JLabel("New Profile Picture URL: ");
-            text1 = new JTextField(100);
+            text1 = new JTextField(15);
             third.add(newProfile);
             third.add(text1);
             ProfileSection.add(third);
@@ -96,10 +100,10 @@ public class PersonalInfo extends JPanel implements ActionListener{
                                         @Override
                                         public void run() {
                                             fp.setProfile(text1.getText());
-                                            text1.setText("");
                                             URL url = null;
                                             try {
-                                                url = new URL(URL);
+                                                url = new URL(text1.getText());
+                                                text1.setText("");
                                             } catch (MalformedURLException ex) {
                                                 throw new RuntimeException(ex);
                                             }
@@ -109,8 +113,37 @@ public class PersonalInfo extends JPanel implements ActionListener{
                                             } catch (IOException ex) {
                                                 throw new RuntimeException(ex);
                                             }
-                                            Image i = image.getScaledInstance((int)PhotoDimension.getWidth(), (int)PhotoDimension.getHeight(), Image.SCALE_DEFAULT);
-                                            Profile1 = new JLabel(new ImageIcon(i));
+
+
+
+                                            ImageIcon IIcon = new ImageIcon(url);
+                                            JLabel image1 = new JLabel(IIcon);
+                                            Image img = null;
+                                            try {
+                                                img = ImageIO.read(url);
+                                            } catch (IOException ex) {
+                                                throw new RuntimeException(ex);
+                                            }
+                                            BufferedImage mainIcon = (BufferedImage) img;
+                                            int diameter = Math.min(mainIcon.getHeight(), mainIcon.getWidth());
+                                            BufferedImage mask = new BufferedImage(mainIcon.getWidth(), mainIcon.getHeight(), BufferedImage.TYPE_INT_ARGB);
+                                            Graphics2D g = mask.createGraphics();
+
+                                            g.fillOval(0,0, diameter-1, diameter-1);
+                                            g.dispose();
+
+                                            BufferedImage masked = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
+                                            g = masked.createGraphics();
+                                            int x = (diameter-mainIcon.getWidth()) / 2;
+                                            int y = (diameter-mainIcon.getHeight()) / 2;
+                                            g.drawImage(mainIcon,x,y,null);
+                                            g.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
+                                            g.drawImage(mask,0,0,null);
+                                            g.dispose();
+
+
+                                            IIcon.setImage(masked.getScaledInstance((int)PhotoDimension.getWidth(), (int)PhotoDimension.getHeight(), Image.SCALE_DEFAULT));
+                                            Profile1 = new JLabel(IIcon);
                                             ProfileSection.add(Profile1);
                                         }
                                     }
@@ -120,11 +153,10 @@ public class PersonalInfo extends JPanel implements ActionListener{
                     }
                 });
             }
-
-            this.add(ProfileSection, BorderLayout.CENTER);
+            general = ProfileSection;
+            this.add(general, BorderLayout.CENTER);
             this.validate();
             this.repaint();
-
         }
     }
     public PersonalInfo(String name, FrontPage fp, String URL) {

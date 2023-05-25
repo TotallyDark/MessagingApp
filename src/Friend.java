@@ -3,11 +3,11 @@ import javax.swing.*;
 public class Friend extends JPanel {
     private String name;
     private String ipAddress;
-    private int portalNumber;
+    private String portalNumber;
 
-    public Friend(String name, String ipAddress, int portalNumber) {
+    public Friend(String name, String ipAddress, String portalNumber) {
         this.name = name;
-        this.ipAddress = name;
+        this.ipAddress = ipAddress;
         this.portalNumber = portalNumber;
     }
     public String getFriendName(){
@@ -24,10 +24,10 @@ public class Friend extends JPanel {
         this.ipAddress = ipAddress;
         return ipAddress;
     }
-    public int getPortalNumber(){
+    public String getPortalNumber(){
         return portalNumber;
     }
-    public int setPortalNumber(int portalNumber){
+    public String setPortalNumber(String portalNumber){
         this.portalNumber = portalNumber;
         return portalNumber;
     }

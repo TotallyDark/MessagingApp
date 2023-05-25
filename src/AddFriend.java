@@ -47,6 +47,5 @@ public class AddFriend extends JPanel implements ActionListener {
         buttonPanel.add(friendPanel, BorderLayout.SOUTH);
         add(buttonPanel, BorderLayout.NORTH);
         add(addFriend,BorderLayout.CENTER);
-        repaint();
     }
 }

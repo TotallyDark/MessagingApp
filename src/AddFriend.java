@@ -12,12 +12,14 @@ public class AddFriend extends JPanel implements ActionListener {
     JTextField ipText, portText, friendNameText;
 
     private JPanel general = new JPanel();
+    private JPanel general2 = new JPanel();
 
     ArrayList<Friend> friendList = new ArrayList<>();
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Add Friend")){
             remove(general);
+            remove(general2);
             infoPanel = new JPanel(new BorderLayout());
             enterInfo = new JButton("Enter info");
             enterInfo.addActionListener(this);
@@ -48,15 +50,15 @@ public class AddFriend extends JPanel implements ActionListener {
             add(general, BorderLayout.SOUTH);
             this.validate();
             this.repaint();
-            System.out.println("actionPerformed");
-            System.out.println(e.getActionCommand().equals("enter info"));
             JFrame windowAncestor = (JFrame) SwingUtilities.getWindowAncestor(this);
             windowAncestor.revalidate();
         }
         if(e.getActionCommand().equals("Enter info")){
-            System.out.println("sdrehrh");
             Friend x = new Friend(friendNameText.getText(),ipText.getText(),portText.getText());
             friendList.add(x);
+            friendNameText.setText("");
+            ipText.setText("");
+            portText.setText("");
         }
         if(e.getActionCommand().equals("Friend Info")){
             this.remove(general);
@@ -75,7 +77,7 @@ public class AddFriend extends JPanel implements ActionListener {
             windowAncestor.revalidate();
         }
         if(e.getActionCommand().equals("enter")){
-            System.out.println("wewebehwb");
+
             for (int i = 0; i < friendList.size(); i++) {
                 System.out.println("234t6235634264");
                 if(friendList.get(i).getFriendName().equals(friendNameText.getText())){
@@ -84,8 +86,8 @@ public class AddFriend extends JPanel implements ActionListener {
                     port = new JLabel(friendList.get(i).getPortalNumber());
                     infoPanel.add(ip);
                     infoPanel.add(port);
-                    general = infoPanel;
-                    add(general, BorderLayout.SOUTH);
+                    general2 = infoPanel;
+                    add(general2, BorderLayout.SOUTH);
                     JFrame windowAncestor = (JFrame) SwingUtilities.getWindowAncestor(this);
                     windowAncestor.revalidate();
                     break;

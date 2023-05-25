@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class FrontPage implements ActionListener {
     private String url = "https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
@@ -17,6 +18,7 @@ public class FrontPage implements ActionListener {
     JPanel buttonPanel, pagePanel;
     JButton SocialCircle, MessagePage, AddFriend, PersonalInfo;
     JLabel profile;
+    private ArrayList<Friend> friendList = new ArrayList<>();
     private String user = "User", URL;
     private JPanel thePanel = new JPanel();
     private JLabel general = new JLabel();
@@ -26,7 +28,7 @@ public class FrontPage implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("SocialCircle")) {
             pagePanel.remove(thePanel);
-            SocialCircle x = new SocialCircle();
+            SocialCircle x = new SocialCircle(this);
             pagePanel.add(x);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
@@ -48,7 +50,7 @@ public class FrontPage implements ActionListener {
         }
         else if(e.getActionCommand().equals("AddFriend")) {
             pagePanel.remove(thePanel);
-            AddFriend a = new AddFriend();
+            AddFriend a = new AddFriend(friendList);
             pagePanel.add(a, BorderLayout.CENTER);
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
@@ -130,4 +132,9 @@ public class FrontPage implements ActionListener {
        this.user = name;
     }
     public void setUrl(String url) {this.url = url;}
+
+    public void setFriend(ArrayList<Friend> x) {this.friendList = x;}
+    public String getName(){
+        return user;
+    }
 }

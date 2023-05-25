@@ -14,6 +14,7 @@ import java.awt.Image;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -26,6 +27,7 @@ public class PersonalInfo extends JPanel implements ActionListener{
     JLabel label1, label2, label3, Profile1, newProfile;
     JTextField text, text1;
     JPanel Top, first, second, NameSection, ProfileSection, third;
+
     private JPanel general = new JPanel();
     private String name, URL;
     private FrontPage fp;

@@ -15,7 +15,7 @@ public class SocialCircle extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
 
     }
-    public SocialCircle() {
+    public SocialCircle(FrontPage fp) {
         setLayout(new BorderLayout());
         JButton text = new JButton("Text Message");
         add(text, BorderLayout.NORTH);
@@ -33,7 +33,7 @@ public class SocialCircle extends JPanel implements ActionListener{
                 if(e.getKeyCode() == KeyEvent.VK_ENTER){
                     String text =textField.getText();
                     textField.setText("");
-                    listModel.addElement(getName() + ":" + text);
+                    listModel.addElement(fp.getName() + ":" + text);
                     repaint();
                 }
             }

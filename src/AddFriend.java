@@ -14,7 +14,7 @@ public class AddFriend extends JPanel implements ActionListener {
     private JPanel general = new JPanel();
     private JPanel general2 = new JPanel();
 
-    ArrayList<Friend> friendList = new ArrayList<>();
+    private ArrayList<Friend> friendList = new ArrayList<>();
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Add Friend")){
@@ -96,7 +96,8 @@ public class AddFriend extends JPanel implements ActionListener {
         }
     }
 
-    public AddFriend(){
+    public AddFriend(ArrayList<Friend> x){
+        this.friendList = x;
         setLayout(new BorderLayout());
         buttonPanel = new JPanel();
         addFriend = new JButton("Add Friend");

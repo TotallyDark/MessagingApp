@@ -75,8 +75,8 @@ public class PersonalInfo extends JPanel implements ActionListener{
                         }
                     }
                 });
-                this.validate();
-                this.repaint();
+                JFrame windowAncestor = (JFrame) SwingUtilities.getWindowAncestor(this);
+                windowAncestor.revalidate();
             }
         }
         if(e.getActionCommand().equals("Set Profile")) {
@@ -99,52 +99,14 @@ public class PersonalInfo extends JPanel implements ActionListener{
                                     new Runnable() {
                                         @Override
                                         public void run() {
-                                            fp.setProfile(text1.getText());
-                                            URL url = null;
+                                            fp.setUrl(text1.getText());
                                             try {
-                                                url = new URL(text1.getText());
-                                                text1.setText("");
+                                                fp.setImage();
                                             } catch (MalformedURLException ex) {
                                                 throw new RuntimeException(ex);
                                             }
-                                            Image image;
-                                            try {
-                                                image = ImageIO.read(url);
-                                            } catch (IOException ex) {
-                                                throw new RuntimeException(ex);
-                                            }
+                                            text1.setText("");
 
-
-
-                                            ImageIcon IIcon = new ImageIcon(url);
-                                            JLabel image1 = new JLabel(IIcon);
-                                            Image img = null;
-                                            try {
-                                                img = ImageIO.read(url);
-                                            } catch (IOException ex) {
-                                                throw new RuntimeException(ex);
-                                            }
-                                            BufferedImage mainIcon = (BufferedImage) img;
-                                            int diameter = Math.min(mainIcon.getHeight(), mainIcon.getWidth());
-                                            BufferedImage mask = new BufferedImage(mainIcon.getWidth(), mainIcon.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                                            Graphics2D g = mask.createGraphics();
-
-                                            g.fillOval(0,0, diameter-1, diameter-1);
-                                            g.dispose();
-
-                                            BufferedImage masked = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
-                                            g = masked.createGraphics();
-                                            int x = (diameter-mainIcon.getWidth()) / 2;
-                                            int y = (diameter-mainIcon.getHeight()) / 2;
-                                            g.drawImage(mainIcon,x,y,null);
-                                            g.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_IN));
-                                            g.drawImage(mask,0,0,null);
-                                            g.dispose();
-
-
-                                            IIcon.setImage(masked.getScaledInstance((int)PhotoDimension.getWidth(), (int)PhotoDimension.getHeight(), Image.SCALE_DEFAULT));
-                                            Profile1 = new JLabel(IIcon);
-                                            ProfileSection.add(Profile1);
                                         }
                                     }
                             );
@@ -155,8 +117,8 @@ public class PersonalInfo extends JPanel implements ActionListener{
             }
             general = ProfileSection;
             this.add(general, BorderLayout.CENTER);
-            this.validate();
-            this.repaint();
+            JFrame windowAncestor = (JFrame) SwingUtilities.getWindowAncestor(this);
+            windowAncestor.revalidate();
         }
     }
     public PersonalInfo(String name, FrontPage fp, String URL) {

@@ -11,11 +11,12 @@ public class Server extends JFrame {
     private ServerSocket server;
     private Socket connection;
     private int port;
+    private boolean tfWhile;
 
     public Server(int port) {
-        super("Message");
+        super("Messaging Page");
         this.port =port;
-        userText = new JTextField();
+        userText = new JTextField(60);
         userText.setEditable(false);
         userText.addActionListener(
                 new ActionListener() {
@@ -27,16 +28,18 @@ public class Server extends JFrame {
                 }
             );
         add(userText, BorderLayout.NORTH);
-        chatWindow = new JTextArea();
-        add(new JScrollPane(chatWindow));
-        setSize(600,600);
+        chatWindow = new JTextArea(30,10);
+        add(new JScrollPane(chatWindow), BorderLayout.SOUTH);
+        this.pack();
         setVisible(true);
     }
     public void startRun() {
+        tfWhile = true;
         try {
             server = new ServerSocket(port, 100);
-            while (true) {
+            while (tfWhile) {
                 try {
+                    showMessage("Port: " + port);
                     waitForConnection();
                     setupStreams();
                     whileChatting();
@@ -51,6 +54,16 @@ public class Server extends JFrame {
             ioException.printStackTrace();
         }
     }
+    public void changePort(int port) throws IOException {
+        tfWhile = false;
+        server.close();
+        this.port =port;
+    }
+    public void closeServerSocket() throws IOException {
+        server.close();
+    }
+    public JTextField getTextField() { return this.userText;}
+    public JTextArea getTextArea() { return this.chatWindow;}
     private void waitForConnection() throws IOException {
         showMessage("\nWaiting for connection");
         connection = server.accept();
@@ -96,9 +109,10 @@ public class Server extends JFrame {
                 }
         );
     }
-    private void close() {
-        //showMessage("Ending chat...");
+    public void close() {
+        showMessage("\nEnding chat...\n\n");
         ableToType(false);
+        tfWhile =false;
         try {
             output.close();
             input.close();
@@ -118,126 +132,3 @@ public class Server extends JFrame {
         );
     }
 }
-
-// A Java program for a Server
-/*
-import java.net.*;
-import java.io.*;
-
-public class Server
-{
-    //initialize socket and input stream
-    private Socket		 socket = null;
-    private ServerSocket server = null;
-    private DataInputStream in	 = null;
-
-    // constructor with port
-    public Server(int port)
-    {
-        // starts server and waits for a connection
-        try
-        {
-            server = new ServerSocket(port);
-            System.out.println("Server started");
-
-            System.out.println("Waiting for a client ...");
-
-            socket = server.accept();
-            System.out.println("Client accepted");
-
-            // takes input from the client socket
-            in = new DataInputStream(
-                    new BufferedInputStream(socket.getInputStream()));
-
-            String line = "";
-
-            // reads message from client until "Over" is sent
-            while (!line.equals("Over"))
-            {
-                try
-                {
-                    line = in.readUTF();
-                    System.out.println(line);
-
-                }
-                catch(IOException i)
-                {
-                    System.out.println(i);
-                }
-            }
-            System.out.println("Closing connection");
-
-            // close connection
-            socket.close();
-            in.close();
-        }
-        catch(IOException i)
-        {
-            System.out.println(i);
-        }
-    }
-
-    public static void main(String args[])
-    {
-        Server server = new Server(4000);
-    }
-}
-/*
-// Java program to illustrate Server side
-// Implementation using DatagramSocket
-import java.io.IOException;
-        import java.net.DatagramPacket;
-        import java.net.DatagramSocket;
-        import java.net.InetAddress;
-        import java.net.SocketException;
-
-public class Server
-{
-    public static void main(String[] args) throws IOException
-    {
-        // Step 1 : Create a socket to listen at port 1234
-        DatagramSocket ds = new DatagramSocket(1234);
-        byte[] receive = new byte[65535];
-
-        DatagramPacket DpReceive = null;
-        while (true)
-        {
-
-            // Step 2 : create a DatgramPacket to receive the data.
-            DpReceive = new DatagramPacket(receive, receive.length);
-
-            // Step 3 : revieve the data in byte buffer.
-            ds.receive(DpReceive);
-
-            System.out.println("Client:-" + data(receive));
-
-            // Exit the server if the client sends "bye"
-            if (data(receive).toString().equals("bye"))
-            {
-                System.out.println("Client sent bye.....EXITING");
-                break;
-            }
-
-            // Clear the buffer after every message.
-            receive = new byte[65535];
-        }
-    }
-
-    // A utility method to convert the byte array
-    // data into a string representation.
-    public static StringBuilder data(byte[] a)
-    {
-        if (a == null)
-            return null;
-        StringBuilder ret = new StringBuilder();
-        int i = 0;
-        while (a[i] != 0)
-        {
-            ret.append((char) a[i]);
-            i++;
-        }
-        return ret;
-    }
-}
-
-*/

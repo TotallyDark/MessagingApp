@@ -14,7 +14,7 @@ public class AddFriend extends JPanel implements ActionListener {
     private JPanel general = new JPanel();
     private JPanel general2 = new JPanel();
 
-    private ArrayList<Friend> friendList = new ArrayList<>();
+    private static ArrayList<Friend> friendList = new ArrayList<>();
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Add Friend")){
@@ -110,4 +110,8 @@ public class AddFriend extends JPanel implements ActionListener {
         this.repaint();
         add(buttonPanel, BorderLayout.NORTH);
     }
+    public static ArrayList<Friend> getFriendList() {
+        return friendList;
+    }
+
 }

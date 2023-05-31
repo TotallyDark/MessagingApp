@@ -3,10 +3,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,8 +15,11 @@ public class FrontPage implements ActionListener {
     private String url = "https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
     JFrame frame;
     JPanel buttonPanel, pagePanel;
-    JButton SocialCircle, MessagePage, AddFriend, PersonalInfo;
+    JButton SocialCircle, AddFriend, PersonalInfo;
     JLabel profile;
+    JTextField MessagePage;
+    Server_Test server_test;
+    private int portNum = (int)(Math.random()*10000 +1);
     private ArrayList<Friend> friendList = new ArrayList<>();
     private String user = "User", URL;
     private JPanel thePanel = new JPanel();
@@ -42,11 +44,9 @@ public class FrontPage implements ActionListener {
             thePanel = y;
         } else if (e.getActionCommand().equals("MessagePage")) {
             pagePanel.remove(thePanel);
-            Server z = new Server(6789);
-            pagePanel.add(z, BorderLayout.SOUTH);
-            frame.getContentPane().validate();
-            frame.getContentPane().repaint();
-            z.startRun();
+            if(MessagePage.getText() != null) {
+
+            }
         }
         else if(e.getActionCommand().equals("AddFriend")) {
             pagePanel.remove(thePanel);
@@ -59,14 +59,42 @@ public class FrontPage implements ActionListener {
     }
 
     public FrontPage() throws IOException {
+        server_test = new Server_Test(portNum);
+        SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
+            @Override
+            public ImageIcon[] doInBackground() {
+                server_test.getServer().startRun();
+                return new ImageIcon[0];
+            }
+        };
         frame = new JFrame("Mechat");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         buttonPanel = new JPanel();
 
-        MessagePage = new JButton("MessagePage");
+        MessagePage = new JTextField(String.valueOf(portNum),10);
         MessagePage.addActionListener(this);
         buttonPanel.add(MessagePage);
+        MessagePage.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    portNum = Integer.parseInt(MessagePage.getText());
+                    try {
+                        server_test.getServer().changePort(portNum);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    SwingWorker worker1 = new SwingWorker<ImageIcon[], Void>() {
+                        @Override
+                        public ImageIcon[] doInBackground() {
+                            server_test.getServer().startRun();
+                            return new ImageIcon[0];
+                        }
+                    };
+                    worker1.execute();
+                }
+            }
+        });
 
         SocialCircle = new JButton("SocialCircle");
         SocialCircle.addActionListener(this);
@@ -90,6 +118,8 @@ public class FrontPage implements ActionListener {
 
         frame.setSize(600, 600);
         frame.setVisible(true);
+        server_test.start();
+        worker.execute();
     }
 
     public void setImage() throws MalformedURLException {

@@ -80,14 +80,16 @@ public class Client extends JFrame{
         input = new ObjectInputStream(connection.getInputStream());
         showMessage("\nStreams are connected");
     }
-    private void whileChatting() throws IOException{
+    private void whileChatting() throws IOException {
         ableToType(true);
-        try{
-            message = (String) input.readObject();
-            showMessage(message);
-        }catch (ClassNotFoundException classNotFoundException) {
-            showMessage("\nUnable to read message");
-        }
+        do {
+            try {
+                message = (String) input.readObject();
+                showMessage(message);
+            } catch (ClassNotFoundException classNotFoundException) {
+                showMessage("\nUnable to read message");
+            }
+        } while (!message.equals("SERVER - END"));
     }
     private void close(){
         showMessage("\nShutting down connection");

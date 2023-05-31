@@ -55,16 +55,18 @@ public class Client extends JFrame{
     }
 
     public void startRun() {
-        try{
-            connectToServer();
-            setupStreams();
-            whileChatting();
-        }catch (EOFException eofException) {
-            showMessage("\nServer ended connection");
-        }catch (IOException ioException) {
-            ioException.printStackTrace();
-        }finally {
-            close();
+        while(true) {
+            try {
+                connectToServer();
+                setupStreams();
+                whileChatting();
+            } catch (EOFException eofException) {
+                showMessage("\nServer ended connection");
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            } finally {
+                close();
+            }
         }
     }
     private void connectToServer() throws IOException{

@@ -13,7 +13,7 @@ public class Server_Test {
         this.IP = IP;
     }
     public void start() {
-        server = new Server(port);
+        //server = new Server(port,);
         server.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         server.getContentPane().setName("Message Page");
     }

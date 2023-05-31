@@ -42,7 +42,7 @@ public class messageAFriend extends JFrame {
                             F.getServer().dispose();
                             IPAddress = friend.getIpAddress();
                             portNumber = Integer.parseInt(friend.getPortalNumber());
-                            Client client = new Client(IPAddress,portNumber,name, F);
+                            Client client = new Client(IPAddress,portNumber,F.getName(), F);
                             SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
                                 @Override
                                 public ImageIcon[] doInBackground() {

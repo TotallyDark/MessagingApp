@@ -11,10 +11,12 @@ public class Server extends JFrame {
     private ServerSocket server;
     private Socket connection;
     private int port;
+    private FrontPage F;
     private boolean tfWhile;
 
-    public Server(int port) {
+    public Server(int port, FrontPage F) {
         super("Messaging Page");
+        this.F = F;
         this.port =port;
         userText = new JTextField(60);
         userText.setEditable(false);
@@ -22,7 +24,7 @@ public class Server extends JFrame {
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
-                        sendMessage(event.getActionCommand(), "Server");
+                        sendMessage(event.getActionCommand(), F.getName());
                         userText.setText("");
                     }
                 }

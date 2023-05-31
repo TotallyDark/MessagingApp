@@ -170,7 +170,7 @@ public class FrontPage implements ActionListener {
         return worker;
     }
     public void startServer() {
-        server = new Server(portNum);
+        server = new Server(portNum, this);
         server.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
     }
 

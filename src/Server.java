@@ -59,6 +59,11 @@ public class Server extends JFrame {
         server.close();
         this.port =port;
     }
+    public void closeServerSocket() throws IOException {
+        server.close();
+    }
+    public JTextField getTextField() { return this.userText;}
+    public JTextArea getTextArea() { return this.chatWindow;}
     private void waitForConnection() throws IOException {
         showMessage("\nWaiting for connection");
         connection = server.accept();

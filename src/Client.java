@@ -14,23 +14,41 @@ public class Client extends JFrame{
     private String serverIP;
     private Socket connection;
     private int port;
-    public Client(String host, int port) {
+    private String name;
+    private FrontPage F;
+    public Client(String host, int port, String name, FrontPage F) {
         super("Client");
+        this.F = F;
+        this.name = name;
         this.port = port;
         serverIP = host;
-        userText = new JTextField();
+        userText = new JTextField(10);
         userText.setEditable(false);
         userText.addActionListener(
                 new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent event) {
-                        sendMessage(event.getActionCommand(), "Client");
+                        sendMessage(event.getActionCommand(), name);
                         userText.setText("");
                     }
                 }
         );
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                F.startServer();
+                SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
+                    @Override
+                    public ImageIcon[] doInBackground() {
+                        F.getServer().startRun();
+                        return new ImageIcon[0];
+                    }
+
+                };
+                worker.execute();
+            }
+        });
         add(userText, BorderLayout.NORTH);
-        chatWindow = new JTextArea();
+        chatWindow = new JTextArea(60,10);
         add(new JScrollPane(chatWindow),BorderLayout.CENTER);
         setSize(600, 600);
         setVisible(true);
@@ -42,7 +60,7 @@ public class Client extends JFrame{
             setupStreams();
             whileChatting();
         }catch (EOFException eofException) {
-            showMessage("\nClient ended connection");
+            showMessage("\nServer ended connection");
         }catch (IOException ioException) {
             ioException.printStackTrace();
         }finally {
@@ -50,9 +68,9 @@ public class Client extends JFrame{
         }
     }
     private void connectToServer() throws IOException{
-        showMessage("\nConnecting...");
+        showMessage("Connecting...");
         connection = new Socket(InetAddress.getByName(serverIP), port);
-        showMessage("\nConnected");
+        showMessage("\nConnected to " + serverIP +" AKA: " +name);
     }
     private void setupStreams() throws IOException{
         output = new ObjectOutputStream(connection.getOutputStream());
@@ -62,14 +80,12 @@ public class Client extends JFrame{
     }
     private void whileChatting() throws IOException{
         ableToType(true);
-        do {
-            try{
-                message = (String) input.readObject();
-                showMessage(message);
-            }catch (ClassNotFoundException classNotFoundException) {
-                showMessage("\nUnable to read message");
-            }
-        } while(!message.equals("SERVER - END"));
+        try{
+            message = (String) input.readObject();
+            showMessage(message);
+        }catch (ClassNotFoundException classNotFoundException) {
+            showMessage("\nUnable to read message");
+        }
     }
     private void close(){
         showMessage("\nShutting down connection");

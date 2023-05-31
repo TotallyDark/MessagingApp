@@ -14,11 +14,11 @@ import java.util.ArrayList;
 public class FrontPage implements ActionListener {
     private String url = "https://as2.ftcdn.net/v2/jpg/00/64/67/63/1000_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg";
     JFrame frame;
-    JPanel buttonPanel, pagePanel;
-    JButton SocialCircle, AddFriend, PersonalInfo;
-    JLabel profile;
+    JPanel buttonPanel, pagePanel, portPanel;
+    JButton SocialCircle, AddFriend, PersonalInfo, msgAFriend;
+    JLabel profile, portLabel;
     JTextField MessagePage;
-    Server_Test server_test;
+    Server server;
     private int portNum = (int)(Math.random()*10000 +1);
     private ArrayList<Friend> friendList = new ArrayList<>();
     private String user = "User", URL;
@@ -42,13 +42,11 @@ public class FrontPage implements ActionListener {
             frame.getContentPane().validate();
             frame.getContentPane().repaint();
             thePanel = y;
-        } else if (e.getActionCommand().equals("MessagePage")) {
-            pagePanel.remove(thePanel);
-            if(MessagePage.getText() != null) {
-
-            }
-        }
-        else if(e.getActionCommand().equals("AddFriend")) {
+        } else if (e.getActionCommand().equals("Message A Friend")) {
+            messageAFriend m = new messageAFriend(this);
+            m.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            m.setVisible(true);
+        } else if(e.getActionCommand().equals("AddFriend")) {
             pagePanel.remove(thePanel);
             AddFriend a = new AddFriend(friendList);
             pagePanel.add(a, BorderLayout.CENTER);
@@ -59,35 +57,33 @@ public class FrontPage implements ActionListener {
     }
 
     public FrontPage() throws IOException {
-        server_test = new Server_Test(portNum);
-        SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
-            @Override
-            public ImageIcon[] doInBackground() {
-                server_test.getServer().startRun();
-                return new ImageIcon[0];
-            }
-        };
-        frame = new JFrame("Mechat");
+        startServer();
+        frame = new JFrame("Never gonna give you up, never gonna let you down...");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         buttonPanel = new JPanel();
 
         MessagePage = new JTextField(String.valueOf(portNum),10);
         MessagePage.addActionListener(this);
-        buttonPanel.add(MessagePage);
+        portPanel = new JPanel();
+        portLabel = new JLabel("My Port Num:");
+        portPanel.setLayout(new GridLayout(2,1));
+        portPanel.add(portLabel);
+        portPanel.add(MessagePage);
+        buttonPanel.add(portPanel);
         MessagePage.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     portNum = Integer.parseInt(MessagePage.getText());
                     try {
-                        server_test.getServer().changePort(portNum);
+                        server.changePort(portNum);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                     SwingWorker worker1 = new SwingWorker<ImageIcon[], Void>() {
                         @Override
                         public ImageIcon[] doInBackground() {
-                            server_test.getServer().startRun();
+                            server.startRun();
                             return new ImageIcon[0];
                         }
                     };
@@ -99,6 +95,10 @@ public class FrontPage implements ActionListener {
         SocialCircle = new JButton("SocialCircle");
         SocialCircle.addActionListener(this);
         buttonPanel.add(SocialCircle);
+
+        msgAFriend = new JButton("Message A Friend");
+        msgAFriend.addActionListener(this);
+        buttonPanel.add(msgAFriend);
 
         AddFriend = new JButton("AddFriend");
         AddFriend.addActionListener(this);
@@ -116,10 +116,12 @@ public class FrontPage implements ActionListener {
         frame.add(pagePanel, BorderLayout.NORTH);
         pagePanel.setSize(600, 600);
 
-        frame.setSize(600, 600);
+        frame.setSize(700, 300);
         frame.setVisible(true);
-        server_test.start();
-        worker.execute();
+        server.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        server.getContentPane().setName("Message Page");
+
+        myWorker().execute();
     }
 
     public void setImage() throws MalformedURLException {
@@ -157,6 +159,20 @@ public class FrontPage implements ActionListener {
         frame.repaint();
         frame.revalidate();
     }
+    public SwingWorker myWorker() {
+        SwingWorker worker = new SwingWorker<ImageIcon[], Void>() {
+            @Override
+            public ImageIcon[] doInBackground() {
+                server.startRun();
+                return new ImageIcon[0];
+            }
+        };
+        return worker;
+    }
+    public void startServer() {
+        server = new Server(portNum);
+        server.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+    }
 
     public void setName(String name) {
        this.user = name;
@@ -166,5 +182,8 @@ public class FrontPage implements ActionListener {
     public void setFriend(ArrayList<Friend> x) {this.friendList = x;}
     public String getName(){
         return user;
+    }
+    public Server getServer() {
+        return this.server;
     }
 }
